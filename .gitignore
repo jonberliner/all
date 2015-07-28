@@ -1,0 +1,6 @@
+*.pkl
+*.csv
+*.pdf
+*.pyc
+*.so
+*.c
