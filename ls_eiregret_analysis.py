@@ -20,10 +20,10 @@ PICKLED_DF_NAME = '_'.join(['df', EXPNAME, EXPDATE]) + '.pkl'
 # stitch into a df
 df_lsfits = stitch_pickled(OUTFOLDER+SUBSERIES_FNAME+'*.pkl')
 # unpickle raw
-dfraw = unpickle(RAWFOLDER + PICKLED_DF_NAME)
+dfprepped = unpickle(PREPPEDFOLDER + PICKLED_DF_NAME)
 # merge experiment condition
-merge_first(df_lsfits, dfraw, 'LENSCALE', 'workerid')
-merge_first(df_lsfits, dfraw, 'counterbalance', 'workerid')
+merge_first(df_lsfits, dfprepped, 'LENSCALE', 'workerid')
+merge_first(df_lsfits, dfprepped, 'counterbalance', 'workerid')
 df_lsfits.rename(columns={'LENSCALE': 'exp_ls'}, inplace=True)
 
 # save to csv for analysis in r

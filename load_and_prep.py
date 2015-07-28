@@ -18,6 +18,7 @@ def load_pickled(fname):
     return df
 
 def load_legacy(db_url, expname):
+    """loads older experiments that required janky loaders that mixed in prepping as well"""
     if expname=='noChoice_exp0':
         FINISHED_STATUSES = [3,4,5,7]
         # trials that do not return true for all functions in criterion will not be used
@@ -25,6 +26,15 @@ def load_legacy(db_url, expname):
                     lambda df: df['round'] > 0 and df['round'] <= 200,
                     lambda df: df['status'] in FINISHED_STATUSES]
         df = jbload.noChoice_exp0(db_url, CRITERION)
+
+    if expname=='myopic_exp0':
+        FINISHED_STATUSES = [3,4,5,7]
+        # trials that do not return true for all functions in criterion will not be used
+        CRITERION = [lambda df: 'round' in df,
+                    lambda df: df['round'] > 0 and df['round'] <= 200,
+                    lambda df: df['status'] in FINISHED_STATUSES]
+
+        df = jbload.myopic_exp0(db_url, CRITERION)
         return df
 
 def filter_df(df, critfcns):
@@ -80,4 +90,30 @@ def prep(df, expname):
         tmp = tmp.map(lambda x: [x])
         df['yActiveObs'] = tmp
 
-        return df
+    elif expname == 'myopic_exp0':
+        df.rename(columns={'obsX': 'xPassiveObs',
+                        'obsY': 'yPassiveObs',
+                        'samX': 'xActiveObs',  
+                        'samY': 'yActiveObs',
+                        'round': 'itrial',
+                        'lenscale': 'LENSCALE',
+                        'sigvar': 'SIGVAR'},
+                inplace=True)
+
+        tmp = df.xPassiveObs
+        tmp = tmp.map(lambda x: x.tolist())
+        df['xPassiveObs'] = tmp
+
+        tmp = df.yPassiveObs
+        tmp = tmp.map(lambda x: x.tolist())
+        df['yPassiveObs'] = tmp
+
+        tmp = df.xActiveObs
+        tmp = tmp.map(lambda x: [x])
+        df['xActiveObs'] = tmp
+
+        tmp = df.yActiveObs
+        tmp = tmp.map(lambda x: [x])
+        df['yActiveObs'] = tmp
+
+    return df
