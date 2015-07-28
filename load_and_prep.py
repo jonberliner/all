@@ -24,7 +24,7 @@ def load_legacy(db_url, expname):
         CRITERION = [lambda df: 'round' in df,
                     lambda df: df['round'] > 0 and df['round'] <= 200,
                     lambda df: df['status'] in FINISHED_STATUSES]
-        df = jbload.noChoice_exp0(db_url, 'noChoice_exp0', CRITERION)
+        df = jbload.noChoice_exp0(db_url, CRITERION)
         return df
 
 def filter_df(df, critfcns):

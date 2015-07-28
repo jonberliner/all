@@ -59,7 +59,7 @@ if __name__ == '__main__':
     RAWFOLDER = BASEFOLDER + 'raw/'  # where data pulled from database is.
     PREPPEDFOLDER = BASEFOLDER + 'prepped/'  # where data is after being scrubbed after pulled from db
     OUTFOLDER = BASEFOLDER + 'output/'  # where results will be saved
-    SUBSERIES_FNAME = '_'.join(['series_lsfit_regret', EXPNAME, EXPDATE])  # template for the name of the output of the analysis
+    SUBSERIES_FNAME = '_'.join(['TEST_series_lsfit_regret', EXPNAME, EXPDATE])  # template for the name of the output of the analysis
 
     # ### uncomment to source from pkl
     PICKLED_DF_NAME = '_'.join(['df', EXPNAME, EXPDATE]) + '.pkl'
