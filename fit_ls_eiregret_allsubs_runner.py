@@ -1,10 +1,7 @@
 from fit_ls_eiregret_sub_runner import fit_ls_to_EIregret_sub
 from jb.jbutil import stitch_pickled
+from jb.jbpickle import unpickle
 import prep_bayesOpt
-# from prep_bayesOpt import load_pickled, load_sql
-from numpy.random import RandomState
-rng = RandomState()
-import pdb
 from time import time
 from os import environ, getcwd
 from os.path import isfile
