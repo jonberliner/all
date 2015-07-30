@@ -1,5 +1,5 @@
 from fit_ls_eiregret_sub_runner import fit_ls_to_EIregret_sub
-from jbutil import stitch_pickled
+from jb.jbutil import stitch_pickled
 import prep_bayesOpt
 # from prep_bayesOpt import load_pickled, load_sql
 from numpy.random import RandomState
