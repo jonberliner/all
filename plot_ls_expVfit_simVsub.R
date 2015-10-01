@@ -2,27 +2,41 @@ require(ggplot2)
 
 FIGDIR <- '~/Documents/drilling/analyses/all/figs/'
 
-# DFDIR <- '~/Desktop/'
-# EXPNAME <- 'SIM_bayesOpt_e'
-# EXPDATE <- '073115'
+DFDIR <- '~/Desktop/'
+EXPNAME <- 'SIM_bayesOpt_e'
+EXPDATE <- '073115'
+NAME <- paste('df_lsfit_regret', EXPNAME, EXPDATE, sep='_')
+df_sim <- read.csv(paste(DFDIR, NAME, '.csv', sep=''), header=TRUE)
+df_sim$cond <- as.factor(df_sim$exp_ls)
+# drop pandas residue
+df_sim <- subset(df_sim, select=-c(X))
+# log-transform data
+df_sim$fit_ls <- log2(df_sim$fit_ls)
+df_sim$exp_ls <- log2(df_sim$exp_ls)
+df_sim$suborsim <- 'sim'
 
 DFDIR <- '~/Documents/drilling/analyses/all/output/'
 EXPNAME <- 'bayesOpt_e'
 EXPDATE <- '072215'
-
-
 NAME <- paste('df_lsfit_regret', EXPNAME, EXPDATE, sep='_')
-
-df <- read.csv(paste(DFDIR, NAME, '.csv', sep=''), header=TRUE)
-
-df$cond <- as.factor(df$exp_ls)
-
+df_sub <- read.csv(paste(DFDIR, NAME, '.csv', sep=''), header=TRUE)
+df_sub$cond <- as.factor(df_sub$exp_ls)
 # drop pandas residue
-df <- subset(df, select=-c(X))
-
+df_sub <- subset(df_sub, select=-c(X))
 # log-transform data
-df$fit_ls <- log2(df$fit_ls)
-df$exp_ls <- log2(df$exp_ls)
+df_sub$fit_ls <- log2(df_sub$fit_ls)
+df_sub$exp_ls <- log2(df_sub$exp_ls)
+df_sub$suborsim <- 'sub'
+
+myvars <- c("sse", "fit_ls", "exp_ls", "workerid", "suborsim", "cond", "counterbalance")
+df_sim <- df_sim[,myvars]
+df_sub <- df_sub[,myvars]
+
+df <- rbind(df_sub, df_sim)
+
+ggp <- ggplot(aes(x=exp_ls, y=sse, colour=suborsim), data=df)
+
+
 
 model <- lm(fit_ls ~ exp_ls, data=df)
 grid <- with(df, expand.grid(
